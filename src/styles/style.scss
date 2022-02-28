@@ -1,0 +1,23 @@
+#app {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin: 0 auto;
+    max-width: 360px;
+    & > h1 {
+        color: #333;
+    }
+    & > .message {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+        & > p {
+            margin: 0;
+            padding: 0;
+        }
+        & > .dateTime { 
+            font-size: 12px;
+        }
+    }
+}
