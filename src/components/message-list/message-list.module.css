@@ -1,0 +1,11 @@
+.inputMessage {
+    margin: 24px 0;
+}
+.sendIcon {
+    cursor: pointer;
+}
+.messageContainer {
+    display: flex;
+    list-style: none;
+    padding: 10px 0;
+}
