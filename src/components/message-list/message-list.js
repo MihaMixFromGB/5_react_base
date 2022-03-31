@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import { Input, InputAdornment } from "@mui/material";
 import { Send } from "@mui/icons-material";
 import { makeStyles } from '@mui/styles';
@@ -13,23 +14,31 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export function MessageList({messageList}) {
-    const [ messages, setMessages ] = useState([]);
+export function MessageList() {
+    const [ messageList, setMessageList ] = useState({
+        room1: [],
+        room2: [],
+        room3: []
+    });
     const [ messageText, setMessageText ] = useState("");
     const inputRef = useRef();
+    const { roomId } = useParams();
 
     const classes = useStyles();
     
     const sendMessage = () => {
         if (messageText) {
-            setMessages([
-                ...messages,
-                {
-                    author: "batman",
-                    text: messageText,
-                    dateTime: new Date().toLocaleString('ru')
-                }
-            ]);
+            setMessageList({
+                ...messageList,
+                [roomId]: [
+                    ...(messageList[roomId] ?? []),
+                    {
+                        author: "batman",
+                        text: messageText,
+                        dateTime: new Date().toLocaleString('ru')
+                    }
+                ]
+            });
 
             setMessageText("");
             focusInput();
@@ -38,7 +47,7 @@ export function MessageList({messageList}) {
 
     const focusInput = () => {
         if (inputRef.current) inputRef.current.focus();
-    }
+    };
 
     const handlePressInput = ({code}) => {
         if (code === "Enter") {
@@ -49,27 +58,31 @@ export function MessageList({messageList}) {
     useEffect(() => {
         const defaultAuthor = "ROBOT";
         let timerId = null;
+        const messages = messageList[roomId] ?? [];
         const lastMessage = messages[messages.length - 1];
 
         if (!messages.length || lastMessage.author === defaultAuthor) return;
 
         timerId = setTimeout(() => {
-            setMessages([
-                ...messages,
-                {
-                    author: defaultAuthor,
-                    text: "OK!",
-                    dateTime: new Date().toLocaleString('ru')
-                }
-            ]);
+            setMessageList({
+                ...messageList,
+                [roomId]: [
+                    ...(messageList[roomId] ?? []),
+                    {
+                        author: defaultAuthor,
+                        text: "OK!",
+                        dateTime: new Date().toLocaleString('ru')
+                    }
+                ]
+            });
         }, 1500);
     
         return () => {
           clearTimeout(timerId)
         };
-      }, [messages]);
+      }, [messageList, roomId]);
 
-    
+    const messages = messageList[roomId] ?? [];
 
     return (
         <>

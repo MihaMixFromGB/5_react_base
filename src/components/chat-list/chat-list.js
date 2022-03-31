@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { List } from "@mui/material";
 import { Chat } from "./chat";
 
 export function ChatList() {
-    const chats = [{
+    const [chats] = useState([{
         id: 1,
         name: "room1"
     },
@@ -14,18 +15,21 @@ export function ChatList() {
     {
         id: 3,
         name: "room3"
-    }];
-    const [selectedIndex, setSelectedIndex] = useState(1);
+    }]);
+    const navigate = useNavigate();
+    const { roomId } = useParams();
 
     return (
         <List component="nav">
-            {chats.map(chat => {
-                return <Chat 
+            {chats.map(chat => (
+                <Chat
                     key={chat.id}
                     title={chat.name}
-                    selected={selectedIndex === chat.id}
-                    handleListItemClick={() => setSelectedIndex(chat.id)} />
-            })}
+                    selected={chat.name === roomId}
+                    handleListItemClick={() => {
+                        navigate(`/chats/${chat.name}`);
+                    }} />
+            ))}
         </List>
     );
 }
