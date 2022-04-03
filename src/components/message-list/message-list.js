@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { Input, InputAdornment } from "@mui/material";
 import { Send } from "@mui/icons-material";
@@ -13,6 +13,17 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.primary.main
     }
 }));
+const DEFAULT_USER = "BATMAN";
+const BOT_NAME = "ROBOT";
+const BOT_MESSAGE = "OK!";
+
+const scrollToBottom = () => {
+    window.scrollTo(0, document.body.scrollHeight)
+};
+
+const focusInput = (inputRef) => {
+    if (inputRef.current) inputRef.current.focus();
+};
 
 export function MessageList() {
     const [ messageList, setMessageList ] = useState({
@@ -26,61 +37,50 @@ export function MessageList() {
 
     const classes = useStyles();
     
-    const sendMessage = () => {
-        if (messageText) {
+    const sendMessage = useCallback((text, author = DEFAULT_USER) => {
+        if (text) {
             setMessageList({
                 ...messageList,
                 [roomId]: [
                     ...(messageList[roomId] ?? []),
                     {
-                        author: "batman",
-                        text: messageText,
+                        author: author,
+                        text: text,
                         dateTime: new Date().toLocaleString('ru')
                     }
                 ]
             });
 
             setMessageText("");
-            focusInput();
         }
-    };
-
-    const focusInput = () => {
-        if (inputRef.current) inputRef.current.focus();
-    };
+    }, [messageList, roomId]);
 
     const handlePressInput = ({code}) => {
         if (code === "Enter") {
-            sendMessage();
+            sendMessage(messageText);
         }
     };
 
     useEffect(() => {
-        const defaultAuthor = "ROBOT";
+        scrollToBottom();
+        focusInput(inputRef);
+    }, [messageList])
+
+    useEffect(() => {
         let timerId = null;
         const messages = messageList[roomId] ?? [];
         const lastMessage = messages[messages.length - 1];
 
-        if (!messages.length || lastMessage.author === defaultAuthor) return;
+        if (!messages.length || lastMessage.author === BOT_NAME) return;
 
         timerId = setTimeout(() => {
-            setMessageList({
-                ...messageList,
-                [roomId]: [
-                    ...(messageList[roomId] ?? []),
-                    {
-                        author: defaultAuthor,
-                        text: "OK!",
-                        dateTime: new Date().toLocaleString('ru')
-                    }
-                ]
-            });
+            sendMessage(BOT_MESSAGE, BOT_NAME);
         }, 1500);
     
         return () => {
           clearTimeout(timerId)
         };
-      }, [messageList, roomId]);
+      }, [messageList, roomId, sendMessage]);
 
     const messages = messageList[roomId] ?? [];
 
@@ -104,7 +104,8 @@ export function MessageList() {
                 fullWidth
                 endAdornment={
                     <InputAdornment position="end">
-                        <Send className={styles.sendIcon} onClick={sendMessage} />
+                        <Send className={styles.sendIcon}
+                                onClick={() => sendMessage(messageText)} />
                     </InputAdornment>
                 }
             />
