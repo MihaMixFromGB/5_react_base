@@ -10,7 +10,7 @@ import styles from "./message-list.module.css";
 
 const useStyles = makeStyles((theme) => ({
     list: {
-        backgroundColor: theme.palette.primary.main
+        backgroundColor: theme.palette.customGrey.main
     }
 }));
 const DEFAULT_USER = "BATMAN";

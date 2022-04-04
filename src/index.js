@@ -11,11 +11,8 @@ import './index.css';
 
 const theme = createTheme({
   palette: {
-    primary: {
+    customGrey: {
       main: "#edecdf"
-    },
-    secondary: {
-      main: "#ffe8a5"
     }
   }
 });
