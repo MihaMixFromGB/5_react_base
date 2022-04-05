@@ -20,8 +20,7 @@ export function ProfilePage() {
                 control={ <Checkbox checked={isVisibleProfile}
                                     onChange={() => handlerUpdateCheckbox()} />}
                 label="Update your profile" />
-            { isVisibleProfile &&  <PersonalInfo /> }
-            
+            { isVisibleProfile &&  <PersonalInfo firstName={firstName} lastName={lastName} /> }
         </div>
     );
 }
