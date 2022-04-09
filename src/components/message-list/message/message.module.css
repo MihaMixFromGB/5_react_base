@@ -1,0 +1,25 @@
+.message {
+    display: inline-flex;
+    flex-direction: column;
+    max-width: 360px;
+    margin: 10px auto 0 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 25px;
+    background-color: #F9F9F9;
+}
+.message[data-author="ROBOT"] {
+    margin: 10px 10px 0 auto;
+}
+.message__author {
+    font-weight: bold;
+    align-self: flex-end;
+}
+.message__text {
+    word-break: break-word;
+}
+.message__dateTime {
+    align-self: flex-end;
+    color: grey;
+    font-size: 12px;
+}
