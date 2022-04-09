@@ -6,11 +6,8 @@
 .page {
     min-height: 100vh;
     display: grid;
-    grid-template-rows: min-content min-content 1fr;
+    grid-template-rows: 1fr;
     padding: 0 10px;
-}
-.header {
-    padding: 20px 0;
 }
 .content {
     display: flex;
