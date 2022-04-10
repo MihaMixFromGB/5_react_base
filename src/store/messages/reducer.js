@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { ADD_MESSAGE, DELETE_MESSAGE } from "./types";
+import { ADD_MESSAGE, DELETE_MESSAGE, DELETE_ALL_MESSAGES } from "./types";
 
 const initialState = {
     messages: {}
@@ -26,6 +26,15 @@ export const messagesReducer = (state = initialState, action) => {
             };
         case DELETE_MESSAGE:
             return;
+        case DELETE_ALL_MESSAGES:
+            const newMessagesList = state.messages.filter(
+                chat => chat.id !== action.payload);
+            return {
+                ...state,
+                messages: {
+                    ...newMessagesList
+                }
+            }
         default:
             return state;
     };

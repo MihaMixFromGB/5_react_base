@@ -73,9 +73,9 @@ export function MessageList() {
     return (
         <>
             <ul className={styles.messagesList}>
-                {messages.map((item) => <li
+                {messages.map((item, index) => <li
                     className={classNames(styles.messageContainer, classes.list)}
-                    key={item.dateTime}>
+                    key={index}>
                         {Message(item)}
                 </li>)}
             </ul>

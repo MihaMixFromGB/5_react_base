@@ -40,7 +40,7 @@ export function ChatList() {
                     title={chat.name}
                     selected={chat.name === roomId}
                     handleListItemClick={() => {
-                        navigate(`/chats/${chat.name}`);
+                        navigate(`/chats/${chat.id}`);
                     }}>
                         <button key={"key_" + chat.id} data-id={chat.id} onClick={handleDeleteClick}>УДАЛИТЬ</button>
                 </Chat>
