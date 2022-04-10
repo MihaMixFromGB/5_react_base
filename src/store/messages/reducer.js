@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { CREATE_MESSAGE, DELETE_MESSAGE } from "./types";
+import { ADD_MESSAGE, DELETE_MESSAGE } from "./types";
 
 const initialState = {
     messages: {}
@@ -7,7 +7,7 @@ const initialState = {
 
 export const messagesReducer = (state = initialState, action) => {
     switch (action.type) {
-        case CREATE_MESSAGE:
+        case ADD_MESSAGE:
             const { roomId, message } = action.payload;
             return {
                 ...state,

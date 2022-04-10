@@ -6,7 +6,7 @@ import { Send } from "@mui/icons-material";
 import { makeStyles } from '@mui/styles';
 import classNames from 'classnames';
 import { Message } from "./message";
-import { createMessage } from "../../store/messages";
+import { addMessage } from "../../store/messages";
 import { messagesSelector } from "../../store/messages";
 
 import styles from "./message-list.module.css";
@@ -17,12 +17,12 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 const DEFAULT_USER = "BATMAN";
-const BOT_NAME = "ROBOT";
-const BOT_MESSAGE = "OK!";
+const BOT_NAME = "BOT";
+const BOT_MESSAGE = "Hello from useEffect!";
 
-// const scrollToBottom = () => {
-//     window.scrollTo(0, document.body.scrollHeight)
-// };
+const scrollToBottom = () => {
+    window.scrollTo(0, document.body.scrollHeight)
+};
 
 const focusInput = (inputRef) => {
     if (inputRef.current) inputRef.current.focus();
@@ -39,7 +39,7 @@ export function MessageList() {
     
     const sendMessage = useCallback((text, author = DEFAULT_USER) => {
         if (text) {
-            dispatch(createMessage(roomId, {author, text}));
+            dispatch(addMessage(roomId, {author, text}));
             setMessageText("");
         }
     }, [dispatch, roomId]);
@@ -51,7 +51,7 @@ export function MessageList() {
     };
 
     useEffect(() => {
-        // scrollToBottom();
+        scrollToBottom();
         focusInput(inputRef);
     }, [messages])
 
@@ -63,7 +63,7 @@ export function MessageList() {
 
         timerId = setTimeout(() => {
             sendMessage(BOT_MESSAGE, BOT_NAME);
-        }, 1500);
+        }, 500);
     
         return () => {
           clearTimeout(timerId)
@@ -72,7 +72,7 @@ export function MessageList() {
 
     return (
         <>
-            <ul>
+            <ul className={styles.messagesList}>
                 {messages.map((item) => <li
                     className={classNames(styles.messageContainer, classes.list)}
                     key={item.dateTime}>

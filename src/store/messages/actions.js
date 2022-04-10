@@ -1,7 +1,7 @@
-import { CREATE_MESSAGE, DELETE_MESSAGE } from "./types";
+import { ADD_MESSAGE, DELETE_MESSAGE } from "./types";
 
-export const createMessage = (roomId, message) => {
-    return { type: CREATE_MESSAGE, payload: {roomId, message}};
+export const addMessage = (roomId, message) => {
+    return { type: ADD_MESSAGE, payload: {roomId, message}};
 };
 
 export const deleteMessage = (id) => {

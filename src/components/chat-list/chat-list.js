@@ -12,8 +12,11 @@ export function ChatList() {
 
     const handleCreateClick = () => {
         const newChatName = prompt("Введите название чата:");
-        const isExist = chats.some((chat) => chat.name === newChatName);
+        if (!newChatName) {
+            return;
+        }
 
+        const isExist = chats.some((chat) => chat.name === newChatName);
         if (isExist) {
             alert(`Чат ${newChatName} уже существует! Выберите другое название`);
             return;
