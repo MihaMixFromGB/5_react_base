@@ -1,10 +1,13 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Input, InputAdornment } from "@mui/material";
 import { Send } from "@mui/icons-material";
 import { makeStyles } from '@mui/styles';
-import { Message } from "./message";
 import classNames from 'classnames';
+import { Message } from "./message";
+import { addMessage } from "../../store/messages";
+import { messagesSelector } from "../../store/messages";
 
 import styles from "./message-list.module.css";
 
@@ -14,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 const DEFAULT_USER = "BATMAN";
-const BOT_NAME = "ROBOT";
-const BOT_MESSAGE = "OK!";
+const BOT_NAME = "BOT";
+const BOT_MESSAGE = "Hello from useEffect!";
 
 const scrollToBottom = () => {
     window.scrollTo(0, document.body.scrollHeight)
@@ -26,34 +29,20 @@ const focusInput = (inputRef) => {
 };
 
 export function MessageList() {
-    const [ messageList, setMessageList ] = useState({
-        room1: [],
-        room2: [],
-        room3: []
-    });
+    const { roomId } = useParams();
+    const messages = useSelector(messagesSelector(roomId));
     const [ messageText, setMessageText ] = useState("");
     const inputRef = useRef();
-    const { roomId } = useParams();
+    const dispatch = useDispatch();
 
     const classes = useStyles();
     
     const sendMessage = useCallback((text, author = DEFAULT_USER) => {
         if (text) {
-            setMessageList({
-                ...messageList,
-                [roomId]: [
-                    ...(messageList[roomId] ?? []),
-                    {
-                        author: author,
-                        text: text,
-                        dateTime: new Date().toLocaleString('ru')
-                    }
-                ]
-            });
-
+            dispatch(addMessage(roomId, {author, text}));
             setMessageText("");
         }
-    }, [messageList, roomId]);
+    }, [dispatch, roomId]);
 
     const handlePressInput = ({code}) => {
         if (code === "Enter") {
@@ -64,29 +53,26 @@ export function MessageList() {
     useEffect(() => {
         scrollToBottom();
         focusInput(inputRef);
-    }, [messageList])
+    }, [messages])
 
     useEffect(() => {
         let timerId = null;
-        const messages = messageList[roomId] ?? [];
         const lastMessage = messages[messages.length - 1];
 
         if (!messages.length || lastMessage.author === BOT_NAME) return;
 
         timerId = setTimeout(() => {
             sendMessage(BOT_MESSAGE, BOT_NAME);
-        }, 1500);
+        }, 500);
     
         return () => {
           clearTimeout(timerId)
         };
-      }, [messageList, roomId, sendMessage]);
-
-    const messages = messageList[roomId] ?? [];
+      }, [roomId, messages, sendMessage]);
 
     return (
         <>
-            <ul>
+            <ul className={styles.messagesList}>
                 {messages.map((item) => <li
                     className={classNames(styles.messageContainer, classes.list)}
                     key={item.dateTime}>

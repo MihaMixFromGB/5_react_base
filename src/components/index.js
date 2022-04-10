@@ -1,4 +1,4 @@
-export * from "./layout";
+export * from "./chat-layout";
 export * from "./header";
 export * from "./chat-list";
 export * from "./message-list";
