@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
-import { Header } from "./components";
-import { ChatsPage, ProfilePage } from "./pages";
-import { store } from "./store";
+import { PersistGate } from 'redux-persist/integration/react';
+import { App } from "./App";
+import { store, persistor } from "./store";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 import './index.css';
 
 const theme = createTheme({
@@ -21,17 +21,9 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <Header />
-
-          <Routes>
-            <Route path="/" element={<ChatsPage />} />
-            {/* <Route path="/" element={<h2>Hello World!</h2>} /> */}
-            <Route path="/chats/*" element={<ChatsPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="*" element={<h1>404 Page not found</h1>} />
-          </Routes>
-        </BrowserRouter>
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+        </PersistGate>
       </ThemeProvider>
     </Provider>
   </React.StrictMode>,
