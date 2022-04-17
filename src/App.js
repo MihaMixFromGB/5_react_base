@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header } from "./components";
 import { ChatsPage, ProfilePage } from "./pages";
+import { GistsPage } from "./pages/gists";
 
 const pageStyle = {
     minHeight: "100vh",
@@ -19,6 +20,7 @@ export function App() {
                 <Route path="/" element={<ChatsPage />} />
                 <Route path="/chats/*" element={<ChatsPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/gists" element={<GistsPage />} />
                 <Route path="*" element={<h1>404 Page not found</h1>} />
                 </Routes>
             </div>
