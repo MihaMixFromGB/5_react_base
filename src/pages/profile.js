@@ -1,26 +1,24 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FormControlLabel, Checkbox } from "@mui/material";
-import { toggleVisibleProfile } from "../store/profile";
+import { toggleVisibleProfile, profileSelector } from "../store/profile";
 import { PersonalInfo } from "../components";
 
 export function ProfilePage() {
     const dispatch = useDispatch();
-    const { isVisibleProfile, firstName, lastName } = useSelector(
-        (state) => state.profile
-    );
+    const profile = useSelector(profileSelector);
     const handlerUpdateCheckbox = useCallback(() => {
         dispatch(toggleVisibleProfile())
     }, [dispatch]);
     
     return (
         <div>
-            <h3>{firstName} {lastName}</h3>
+            <h3>{profile.firstName} {profile.lastName}</h3>
             <FormControlLabel
-                control={ <Checkbox checked={isVisibleProfile}
+                control={ <Checkbox checked={profile.isVisibleProfile}
                                     onChange={() => handlerUpdateCheckbox()} />}
                 label="Update your profile" />
-            { isVisibleProfile &&  <PersonalInfo firstName={firstName} lastName={lastName} /> }
+            { profile.isVisibleProfile &&  <PersonalInfo profile={profile} /> }
         </div>
     );
 }

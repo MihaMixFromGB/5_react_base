@@ -1,11 +1,14 @@
-.inputMessage {
-    margin: 24px 0;
-}
-.sendIcon {
-    cursor: pointer;
+.messagesList {
+    flex-grow: 1;
 }
 .messageContainer {
     display: flex;
     list-style: none;
     padding: 10px 0;
+}
+.inputMessage {
+    margin: 24px 0;
+}
+.sendIcon {
+    cursor: pointer;
 }
