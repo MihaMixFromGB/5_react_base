@@ -1,8 +1,16 @@
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { List } from "@mui/material";
 import { Chat } from "./chat";
-import { chatsSelector, createChat, deleteChat } from "../../store/chats";
+import {
+    chatsSelector,
+    // createChat,
+    // deleteChat,
+    addChatFb,
+    getChatsFb,
+    deleteChatFb
+} from "../../store/chats";
 
 export function ChatList() {
     const chats = useSelector(chatsSelector);
@@ -21,20 +29,26 @@ export function ChatList() {
             alert(`Чат ${newChatName} уже существует! Выберите другое название`);
             return;
         }
-
-        dispatch(createChat(newChatName));
+        
+        // dispatch(createChat(newChatName));
+        dispatch(addChatFb(newChatName));
     };
 
     const handleDeleteClick = (event) => {
         const id = event.target.dataset["id"];
-        dispatch(deleteChat(id));
+        // dispatch(deleteChat(id));
+        dispatch(deleteChatFb(id));
         setTimeout(() => { navigate("/chats") })
     };
+
+    useEffect(()=> {
+        dispatch(getChatsFb());
+    }, [dispatch]);
 
     return (
         <List component="nav">
             <button onClick={handleCreateClick}>ДОБАВИТЬ</button>
-            {chats.map(chat => (
+            {chats?.map(chat => (
                 <Chat
                     key={chat.id}
                     title={chat.name}
@@ -47,4 +61,4 @@ export function ChatList() {
             ))}
         </List>
     );
-}
+};

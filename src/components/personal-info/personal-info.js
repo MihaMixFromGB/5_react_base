@@ -1,12 +1,19 @@
 import { TextField, Button } from '@mui/material';
 import { useState, useCallback } from "react";
 import { useDispatch } from 'react-redux';
-import { updateProfile } from "../../store/profile";
+import {
+    // updateProfile,
+    setProfileFb
+} from "../../store/profile";
 
 import styles from "./personal-info.module.css";
 
-export function PersonalInfo({firstName, lastName}) {
-    const [info, setInfo] = useState({firstName, lastName});
+export function PersonalInfo({profile}) {
+    const [info, setInfo] = useState({
+        firstName: profile.firstName, 
+        lastName: profile.lastName,
+        nickname: profile.nickname
+    });
 
     const handleChangeInfo = (event) => {
         const field = event.target.getAttribute('data-name');
@@ -17,9 +24,13 @@ export function PersonalInfo({firstName, lastName}) {
     };
 
     const dispatch = useDispatch();
-    const handlerUpdateProfile = useCallback(() => {
-        dispatch(updateProfile({...info}));
-    }, [info, dispatch]);
+    const handleUpdateProfile = useCallback(() => {
+        // dispatch(updateProfile({...info}));
+        dispatch(setProfileFb({
+            ...profile,
+            ...info
+        }));
+    }, [profile, info, dispatch]);
 
     return (
         <div className={styles.profile}>
@@ -31,7 +42,11 @@ export function PersonalInfo({firstName, lastName}) {
                 inputProps={{"data-name": "lastName"}}
                 value={info.lastName}
                 onChange={handleChangeInfo} />
-            <Button variant="contained" onClick={handlerUpdateProfile}>UPDATE</Button>
+            <TextField label="Nickname" variant="outlined"
+                inputProps={{"data-name": "nickname"}}
+                value={info.nickname}
+                onChange={handleChangeInfo} />
+            <Button variant="contained" onClick={handleUpdateProfile}>UPDATE</Button>
         </div>
     );
 }

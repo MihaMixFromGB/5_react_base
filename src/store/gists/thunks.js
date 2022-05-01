@@ -8,7 +8,6 @@ export const getPublicGists = page => async (dispatch, _, api) => {
 
         dispatch(getGistsSuccess(data));
     } catch(e) {
-        console.log(e);
         dispatch(getGistsError(e));
     }
 };

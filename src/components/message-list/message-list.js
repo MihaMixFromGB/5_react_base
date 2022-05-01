@@ -6,8 +6,9 @@ import { Send } from "@mui/icons-material";
 import { makeStyles } from '@mui/styles';
 import classNames from 'classnames';
 import { Message } from "./message";
-import { addMessage } from "../../store/messages";
-import { messagesSelector } from "../../store/messages";
+// import { messagesSelector, addMessage } from "../../store/messages";
+import { messagesSelector, addMessageFb, getMessagesFb } from "../../store/messages";
+import { profileSelector } from "../../store/profile";
 
 import styles from "./message-list.module.css";
 
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.customGrey.main
     }
 }));
-const DEFAULT_USER = "BATMAN";
+
 const BOT_NAME = "BOT";
 const BOT_MESSAGE = "Hello from useEffect!";
 
@@ -31,24 +32,31 @@ const focusInput = (inputRef) => {
 export function MessageList() {
     const { roomId } = useParams();
     const messages = useSelector(messagesSelector(roomId));
+    const { firstName, lastName, nickname } = useSelector(profileSelector);
+    const REGISTERED_USER = nickname || `${firstName} ${lastName}`;
     const [ messageText, setMessageText ] = useState("");
     const inputRef = useRef();
     const dispatch = useDispatch();
 
     const classes = useStyles();
     
-    const sendMessage = useCallback((text, author = DEFAULT_USER) => {
+    const sendMessage = useCallback((text, author = REGISTERED_USER) => {
         if (text) {
-            dispatch(addMessage(roomId, {author, text}));
+            // dispatch(addMessage(roomId, {author, text}));
+            dispatch(addMessageFb(roomId, {author, text}));
             setMessageText("");
         }
-    }, [dispatch, roomId]);
+    }, [dispatch, roomId, REGISTERED_USER]);
 
     const handlePressInput = ({code}) => {
         if (code === "Enter") {
             sendMessage(messageText);
         }
     };
+
+    useEffect(() => {
+        dispatch(getMessagesFb(roomId));
+    }, [dispatch, roomId]);
 
     useEffect(() => {
         scrollToBottom();

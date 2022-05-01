@@ -3,6 +3,9 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';    // defaults to localStorage for web
 import thunk from 'redux-thunk';
 import { getPublicGistsApi, getPublicGistsForUserApi } from "../api/gists";
+import { createMessageApi, getMessagesApi, deleteMessagesApi } from "../api/messages";
+import { createChatApi, getChatsApi, removeChatApi } from "../api/chats";
+import { setProfileApi, getProfilesApi } from "../api/profile";
 import { profileReducer } from "./profile";
 import { chatReducer } from "./chats";
 import { messagesReducer } from "./messages/reducer";
@@ -30,7 +33,18 @@ export const store = createStore(
     persistedReducer,
     composeEnhancers(
         applyMiddleware(
-            thunk.withExtraArgument({ getPublicGistsApi, getPublicGistsForUserApi }),
+            thunk.withExtraArgument({
+                getPublicGistsApi,
+                getPublicGistsForUserApi,
+                createMessageApi,
+                getMessagesApi,
+                deleteMessagesApi,
+                createChatApi,
+                getChatsApi,
+                removeChatApi,
+                setProfileApi,
+                getProfilesApi
+            }),
             botMessage,
             cleanerAllMessages
     )));

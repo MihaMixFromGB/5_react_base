@@ -3,3 +3,5 @@ export * from "./header";
 export * from "./chat-list";
 export * from "./message-list";
 export * from "./personal-info";
+export * from "./route";
+export * from "./registration";
