@@ -12,7 +12,7 @@ import { messagesReducer } from "./messages/reducer";
 import { gistsReducer } from "./gists/reducer";
 import { botMessage, cleanerAllMessages } from "./middlewares";
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
     profile: profileReducer,
     chats: chatReducer,
     messages: messagesReducer,
