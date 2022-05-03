@@ -1,0 +1,11 @@
+.gists {
+    display: flex;
+    flex-direction: column;
+}
+.blockToCenter {
+    /* margin: 0 auto; */
+    align-self: center;
+}
+.gists__pagination {
+    margin-top: 20px;
+}

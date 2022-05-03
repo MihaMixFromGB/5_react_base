@@ -8,8 +8,11 @@
     border-radius: 25px;
     background-color: #F9F9F9;
 }
-.message[data-author="ROBOT"] {
+.message[data-author="BOT"] {
     margin: 10px 10px 0 auto;
+}
+.message > * {
+    margin: 5px 0;
 }
 .message__author {
     font-weight: bold;
